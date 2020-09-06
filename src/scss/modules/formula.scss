@@ -1,0 +1,25 @@
+.formula {
+    position: absolute;
+    top: $header-height + $toolbar-height;
+    left: 0;
+    right: 0;
+    padding: 0 40px;
+    height: $formula-height;
+    border-bottom: 1px solid $color-gray;
+    display: flex;
+    align-items: center;
+
+    .icon {
+        border-right: 1px solid $color-gray;
+        padding-right: 10px;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .text-field {
+        border: 0;
+    }
+}
