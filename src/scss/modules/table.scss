@@ -23,6 +23,7 @@
         border: 1px solid $color-gray;
         background: #f8f9fa;
         border-top: none;
+        position: relative;
     }
 
     .row-data {
@@ -40,6 +41,8 @@
         border-top: 0;
         border-left: 0;
         height: 100%;
+        position: relative;
+        box-sizing: border-box;
     }
 
     .cell {
@@ -62,4 +65,29 @@
         }
     }
 
+    .row-resize,
+    .col-resize {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background-color: #3c74ff;
+        opacity: 0;
+        z-index: 1000;
+
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+
+    .col-resize {
+        top: 0;
+        width: 5px;
+        cursor: col-resize;
+    }
+
+    .row-resize {
+        left: 0;
+        height: 5px;
+        cursor: row-resize;
+    }
 }
