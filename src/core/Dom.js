@@ -48,6 +48,21 @@ class Dom {
         return this.$el.dataset;
     }
 
+    id(parse) {
+        if (parse) {
+            const parse = this.id().split(':');
+            return {
+                row: +parse[0],
+                cell: +parse[1]
+            }
+        }
+        return this.$el.dataset.id;
+    }
+
+    find(selector) {
+        return $(this.$el.querySelector(selector))
+    }
+
     findAll(selector) {
         return this.$el.querySelectorAll(selector)
     }
@@ -56,6 +71,16 @@ class Dom {
         Object.keys(styles).forEach(key => {
             this.$el.style[key] = styles[key];
         })
+    }
+
+    addClass(className) {
+        this.$el.classList.add(className);
+        return this;
+    }
+
+    removeClass(className) {
+        this.$el.classList.remove(className);
+        return this;
     }
 }
 export function $(selector) {
