@@ -8,9 +8,11 @@ import {TableSelection} from "@/components/table/TablSelection";
 export class Table extends ExcelComponent {
     static className = 'table';
 
-    constructor($root) {
+    constructor($root, options) {
         super($root, {
-            listeners: ['mousedown', 'keyup']
+            name: 'Table',
+            listeners: ['mousedown', 'keyup'],
+            ...options
         });
     }
 
@@ -58,7 +60,12 @@ export class Table extends ExcelComponent {
     init() {
         super.init();
 
-        this.selection.select(this.$root.find('[data-id="0:0"]'));
+        const $cell = this.$root.find('[data-id="0:0"]');
+        this.selection.select($cell);
+
+        this.$on('formula.input', text => {
+            this.selection.$current.text(text);
+        })
     }
 
     toHTML() {
