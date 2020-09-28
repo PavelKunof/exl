@@ -13,6 +13,21 @@ class Dom {
         return this.$el.outerHTML.trim();
     }
 
+    text(content) {
+        if (typeof content === 'string') {
+            if (this.$el.tagName.toLowerCase() === 'input') {
+                this.$el.value = content;
+                return this
+            }
+            this.$el.innerText = content;
+            return this
+        }
+        if (this.$el.tagName.toLowerCase() === 'input') {
+            return this.$el.value.trim();
+        }
+        return this.$el.innerText.trim();
+    }
+
     append(node) {
         if (node instanceof Dom) {
             this.$el.append(node.$el)
@@ -48,6 +63,21 @@ class Dom {
         return this.$el.dataset;
     }
 
+    id(parse) {
+        if (parse) {
+            const parse = this.id().split(':');
+            return {
+                row: +parse[0],
+                cell: +parse[1]
+            }
+        }
+        return this.$el.dataset.id;
+    }
+
+    find(selector) {
+        return $(this.$el.querySelector(selector))
+    }
+
     findAll(selector) {
         return this.$el.querySelectorAll(selector)
     }
@@ -56,6 +86,22 @@ class Dom {
         Object.keys(styles).forEach(key => {
             this.$el.style[key] = styles[key];
         })
+    }
+
+    focus() {
+        this.$el.focus();
+
+        return this;
+    }
+
+    addClass(className) {
+        this.$el.classList.add(className);
+        return this;
+    }
+
+    removeClass(className) {
+        this.$el.classList.remove(className);
+        return this;
     }
 }
 export function $(selector) {
