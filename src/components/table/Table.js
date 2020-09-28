@@ -11,9 +11,28 @@ export class Table extends ExcelComponent {
     constructor($root, options) {
         super($root, {
             name: 'Table',
-            listeners: ['mousedown', 'keyup'],
+            listeners: ['mousedown', 'keyup', 'input'],
             ...options
         });
+    }
+
+    init() {
+        super.init();
+
+        this.selectCell(this.$root.find('[data-id="0:0"]'));
+
+        this.$on('formula.done', () => {
+            this.selection.$current.focus();
+        });
+
+        this.$on('formula.input', text => {
+            this.selection.$current.text(text);
+        });
+    }
+
+    selectCell($cell) {
+        this.selection.select($cell);
+        this.$emmit('table:select', $cell);
     }
 
     onMousedown(e) {
@@ -26,9 +45,13 @@ export class Table extends ExcelComponent {
 
                 this.selection.selectGroup($cells);
             } else {
-                this.selection.select($(e.target));
+                this.selectCell($(e.target));
             }
         }
+    }
+
+    onInput(e) {
+        this.$emmit('table:input', this.selection.$current.text())
     }
 
     onKeyup(e) {
@@ -47,25 +70,14 @@ export class Table extends ExcelComponent {
             e.preventDefault();
 
             const id = this.selection.$current.id(true);
-            const nextCell = this.$root.find(nextSelector(key, id));
+            const $nextCell = this.$root.find(nextSelector(key, id));
 
-            this.selection.select(nextCell);
+            this.selectCell($nextCell);
         }
     };
 
     prepare() {
         this.selection = new TableSelection();
-    }
-
-    init() {
-        super.init();
-
-        const $cell = this.$root.find('[data-id="0:0"]');
-        this.selection.select($cell);
-
-        this.$on('formula.input', text => {
-            this.selection.$current.text(text);
-        })
     }
 
     toHTML() {
